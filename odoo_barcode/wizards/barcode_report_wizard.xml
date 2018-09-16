@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        <record id="view_barcode_print_wizard_form" model="ir.ui.view">
+            <field name="name">Barcode Config Form Print</field>
+            <field name="model">report.barcode.print</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="product_line">
+                        <tree string="Sales Order Lines" editable="bottom">
+                            <field name="product_id" required="1"/>
+                            <field name="qty" required="1"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button name="print_report" class="btn-primary" string="Print" type="object"/> or
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <act_window id="action_barcode_print_wizard" name="Barcode Product Labels"
+                    key2="client_print_multi" res_model="report.barcode.print" src_model="product.product"
+                    view_mode="form" target="new" view_type="form" context="{'default_template_id':active_id}"
+        />
+    </data>
+</odoo>

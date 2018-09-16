@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sr_api_agent,access_sr_api,model_sr_api,group_ksr_agent,1,0,0,0
+access_sr_api_manager,access_sr_api,model_sr_api,group_ksr_manager,1,1,1,1
+access_knowlarity_number_agent,access_knowlarity_number,model_knowlarity_number,group_ksr_agent,1,0,0,0
+access_knowlarity_number_manager,access_knowlarity_number,model_knowlarity_number,group_ksr_manager,1,1,1,1
+access_call_log_agent,access_call_log,model_call_log,group_ksr_agent,1,1,1,0
+access_call_log_manager,access_call_log,model_call_log,group_ksr_manager,1,1,1,1
+access_schedule_call_agent,access_schedule_call,model_schedule_call,group_ksr_agent,1,1,1,1

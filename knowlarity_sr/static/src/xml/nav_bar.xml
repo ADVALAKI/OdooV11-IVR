@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="ClickCallMenu">
+        <li>
+            <a class="dropdown-toggle" name="click_call_menu" data-toggle="dropdown" aria-expanded="false" title="Call"
+               href="#">
+                <i class="fa fa-phone"/>
+            </a>
+        </li>
+    </t>
+</templates>

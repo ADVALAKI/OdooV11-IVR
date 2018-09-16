@@ -1,0 +1,51 @@
+<odoo>
+    <data>
+        <record id="click_call_view_form" model="ir.ui.view">
+            <field name="name">click.call.form</field>
+            <field name="model">click.call</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="mobile"/>
+                            <field name="agent"/>
+                            <field name="knowlarity_number"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="click_call" string="Call" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="click_call_action">
+            <field name="name">Click Call</field>
+            <field name="res_model">click.call</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="click_call_view_form"/>
+            <field name="target">new</field>
+        </record>
+
+
+
+        <record id="custom_pop_message_wizard_view_form" model="ir.ui.view">
+            <field name="name">custom.pop.message.form</field>
+            <field name="model">custom.pop.message</field>
+            <field name="arch" type="xml">
+                <form string="Success">
+                    <field name="name"/>
+                    <footer>
+                        <button string="Close" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

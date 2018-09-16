@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_barcode_menu,access.barcode.menu,model_barcode_config,odoo_barcode.barcode_menu,1,1,1,1

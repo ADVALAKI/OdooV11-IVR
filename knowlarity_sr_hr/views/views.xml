@@ -1,0 +1,77 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="click_call_view_form_inherit">
+            <field name="name">click.call.form.inherit</field>
+            <field name="model">click.call</field>
+            <field name="inherit_id" ref="knowlarity_sr.click_call_view_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="before">
+                    <field name="call_to_whom"/>
+                </field>
+                <field name="partner_id" position="attributes">
+                    <attribute name="attrs">{'invisible': [('call_to_whom', 'in', ['employee', False])]}</attribute>
+                </field>
+                <field name="partner_id" position="after">
+                    <field name="employee_id" attrs="{'invisible': [('call_to_whom', 'in', ['partner', False])]}"/>
+                </field>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_employee_form_inherit">
+            <field name="name">click.call.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='mobile_phone']" position="replace">
+                    <label for="mobile_phone"/>
+                    <div class="o_row">
+                        <field name="mobile_phone"/>
+                        <button
+                                type="action"
+                                name="%(knowlarity_sr.click_call_action)d"
+                                class="btn-xs btn-link mb4 fa fa-phone"
+                                attrs="{'invisible':[('mobile_phone', '=', False)]}"
+                                context="{'field_name': 'mobile_phone','default_call_to_whom':'employee', 'default_employee_id': active_id}"
+                        />
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='work_phone']" position="replace">
+                    <label for="work_phone"/>
+                    <div class="o_row">
+                        <field name="work_phone"/>
+                        <button
+                                type="action"
+                                name="%(knowlarity_sr.click_call_action)d"
+                                class="btn-xs btn-link mb4 fa fa-phone"
+                                attrs="{'invisible':[('work_phone', '=', False)]}"
+                                context="{'field_name': 'work_phone', 'default_call_to_whom':'employee', 'default_employee_id': active_id}"
+                        />
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        <!--        <record model="ir.ui.view" id="hr_kanban_view_employees_inherit">
+                    <field name="name">hr.employee.kanban.inherit</field>
+                    <field name="model">hr.employee</field>
+                    <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+                    <field name="arch" type="xml">
+                        <xpath expr="//i[@class='fa fa-phone']" position="replace">
+                            <button
+                                    type="action"
+                                    name="%(knowlarity_sr.click_call_action)d"
+                                    class="btn-link mb4 fa fa-phone"
+                                    context="{'field_name': 'work_phone', 'default_employee_id': active_id}"
+                            />
+                        </xpath>
+                        <xpath expr="////i[@class='fa fa-mobile']" position="replace">
+                            <button
+                                    type="action"
+                                    name="%(knowlarity_sr.click_call_action)d"
+                                    class="btn-link mb4 fa fa-mobile"
+                                    context="{'field_name': 'work_phone', 'default_employee_id': active_id}"
+                            />
+                        </xpath>
+                    </field>
+                </record>-->
+
+    </data>
+</odoo>

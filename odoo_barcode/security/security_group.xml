@@ -1,0 +1,7 @@
+<odoo>
+    <data>
+        <record id="barcode_menu" model="res.groups">
+            <field name="name">Barcode Label Menu</field>
+        </record>
+    </data>
+</odoo>

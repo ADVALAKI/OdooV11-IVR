@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+        <template id="report_barcode_temp">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <mydiv style="text-align:center;">
+                                <strong t-if="data['form']['config'].get('product_name')" t-field="doc.name"/>
+                                <h6 t-if="data['form']['config'].get('attributes') and doc.attribute_value_ids">
+                                    <t t-foreach="doc.attribute_value_ids" t-as="variant">
+                                        <em t-field="variant.name"/>,
+                                    </t>
+                                </h6>
+                                <h6 t-if="doc.default_code and doc.default_code">
+                                    <em t-field="doc.default_code"/>
+                                </h6>
+                                <div>
+                                    <img t-if="doc.barcode and len(doc.barcode) == 13 and data['form']['config'].get('type') == 'EAN13'"
+                                         t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;humanreadable=%s' % ( data['form']['config'].get('type'), doc.barcode, 1 if data['form']['config'].get('readable')=='True' else 0)"
+                                    />
+                                    <img t-if="doc.barcode and len(doc.barcode) == 8 and data['form']['config'].get('type') == 'EAN8'"
+                                         t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;humanreadable=%s' % ( data['form']['config'].get('type'), doc.barcode, 1 if data['form']['config'].get('readable')=='True' else 0)"
+                                    />
+                                    <img t-if="data['form']['config'].get('type') == 'QR'"
+                                         t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;humanreadable=%s&amp;width=%s&amp;height=%s' % ( data['form']['config'].get('type'), doc.barcode, 1 if data['form']['config'].get('readable')=='True' else 0, round(data.get('img_width')), round(data.get('img_height')))"
+                                    />
+                                </div>
+                                <h4 t-if="data['form']['config'].get('price')">
+                                    <strong t-if="data['form']['config'].get('symbol_position') == 'before'"
+                                            t-field="doc.company_id.currency_id.symbol"/>
+                                    <strong t-field="doc.list_price" class="text-center"/>
+                                    <strong t-if="data['form']['config'].get('symbol_position') == 'after'"
+                                            t-field="doc.company_id.currency_id.symbol"/>
+                                </h4>
+
+                            </mydiv>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

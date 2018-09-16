@@ -1,0 +1,249 @@
+<odoo>
+    <data>
+        <menuitem id="sr_menu_root" name="IVR"/>
+        <menuitem id="sr_menu_sub" name="Super Receptionist" parent="sr_menu_root"/>
+        <menuitem id="sr_menu_config" name="Configuration" parent="sr_menu_root" groups="group_ksr_manager"/>
+
+        <!--knowlarity.number-->
+        <record id="knowlarity_number_view_form" model="ir.ui.view">
+            <field name="name">knowlarity.number.form</field>
+            <field name="model">knowlarity.number</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" default_focus="1" placeholder="Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="api"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="knowlarity_number_view_tree" model="ir.ui.view">
+            <field name="name">knowlarity.number.tree</field>
+            <field name="model">knowlarity.number</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="knowlarity_number_action" model="ir.actions.act_window">
+            <field name="name">Super Receptionist Number</field>
+            <field name="res_model">knowlarity.number</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+        </record>
+        <menuitem id="knowlarity_number_menu" name="SR Numbers" parent="sr_menu_config"
+                  action="knowlarity_number_action" sequence="1"/>
+
+        <!--sr.api-->
+        <record id="sr_api_view_form" model="ir.ui.view">
+            <field name="name">sr_api_form</field>
+            <field name="model">sr.api</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="channel"/>
+                            <field name="x_api_key"/>
+                            <field name="authorization"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="sr_api_view_tree" model="ir.ui.view">
+            <field name="name">sr.api_tree</field>
+            <field name="model">sr.api</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="channel"/>
+                    <field name="x_api_key"/>
+                    <field name="authorization"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sr_api_action" model="ir.actions.act_window">
+            <field name="name">API</field>
+            <field name="res_model">sr.api</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="sr_api_menu" name="API" parent="sr_menu_config" action="sr_api_action" sequence="2"/>
+
+        <!--call.log-->
+        <record id="call_log_view_tree" model="ir.ui.view">
+            <field name="name">call.log.tree</field>
+            <field name="model">call.log</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="start_time"/>
+                    <field name="customer_number"/>
+                    <field name="agent_number"/>
+                    <field name="agent_id" invisible="1"/>
+                    <field name="knowlarity_number"/>
+                    <field name="call_duration"/>
+                    <field name="uuid" invisible="1"/>
+                    <field name="call_type"/>
+                    <button name="%(click_call_action)d" type="action" icon="fa-phone" context="{'default_mobile': customer_number}"/>
+                    <field name="call_recording" widget="audio_field"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="call_log_view_search" model="ir.ui.view">
+            <field name="name">call.log.search</field>
+            <field name="model">call.log</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="uuid"/>
+                </search>
+            </field>
+        </record>
+        <record id="call_log_action" model="ir.actions.act_window">
+            <field name="name">Call Log</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">call.log</field>
+            <field name="view_mode">tree</field>
+            <field name="search_view_id" ref="call_log_view_search"/>
+        </record>
+        <menuitem id="call_log_menu" name="Call Logs" parent="sr_menu_sub" action="call_log_action" sequence="1"/>
+
+        <!--res.partner-->
+        <record id="res_partner_view_form_inherit_knowlarity_sr" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="IVR">
+                        <div>
+                            <label for="knowlarity_agent"/>
+                            <field name="knowlarity_agent"/>
+                        </div>
+                        <field name="knowlarity_numbers" widget="many2many_tags"
+                               attrs="{'invisible': [('knowlarity_agent', '=', False)]}"/>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+        <record id="view_res_partner_search_inherit_knowlarity_sr" model="ir.ui.view">
+            <field name="name">res.partner.select.filter</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <search position="inside">
+                    <filter string="Agent" name="knowlarity_agent" domain="[('knowlarity_agent','=',1)]"/>
+                </search>
+            </field>
+        </record>
+        <record id="res_partner_action_knowlarity_sr" model="ir.actions.act_window">
+            <field name="name">SR-Agents</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{"search_default_knowlarity_agent":1}</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a contact in your address book.
+                </p>
+                <p>
+                    Odoo helps you easily track all activities related to
+                    a customer: discussions, history of business opportunities,
+                    documents, etc.
+                </p>
+            </field>
+        </record>
+        <menuitem id="res_partner_menu_knowlarity_sr" name="Agents" parent="sr_menu_sub"
+                  action="res_partner_action_knowlarity_sr" sequence="2"/>
+
+        <!--schedule.call-->
+        <record id="schedule_call_view_form" model="ir.ui.view">
+            <field name="name">schedule.call.form</field>
+            <field name="model">schedule.call</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="state" widget="statusbar" nolabel="1" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="mobile"/>
+                            <field name="cron_time"/>
+                            <field name="knowlarity_number"/>
+                            <field name="agent_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="schedule_call_view_tree" model="ir.ui.view">
+            <field name="name">schedule.call.tree</field>
+            <field name="model">schedule.call</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="partner_id"/>
+                    <field name="mobile"/>
+                    <field name="cron_time"/>
+                    <field name="knowlarity_number"/>
+                    <field name="agent_id"/>
+                    <field name="state" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="schedule_call_action" model="ir.actions.act_window">
+            <field name="name">Schedule Call</field>
+            <field name="res_model">schedule.call</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="schedule_call_menu" name="Schedule Calls" parent="sr_menu_sub" action="schedule_call_action"
+                  sequence="3"/>
+
+    <record id="partner_form_click_call_form_view" model="ir.ui.view">
+        <field name="name">res.partner.form.click.call</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='phone']" position="replace">
+                <div class="o_row">
+                    <field name="phone" widget="phone"/>
+                    <button
+                        type="action"
+                        name="%(click_call_action)d"
+                        class="btn-xs btn-link mb4 fa fa-phone"
+                        attrs="{'invisible':[('phone', '=', False)]}"
+                        context="{'field_name': 'phone', 'default_call_to_whom':'partner', 'default_partner_id': active_id}"
+                    />
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='mobile']" position="replace">
+                <div class="o_row">
+                    <field name="mobile" widget="phone"/>
+                    <button
+                        type="action"
+                        name="%(click_call_action)d"
+                        class="btn-xs btn-link mb4 fa fa-phone"
+                        attrs="{'invisible':[('mobile', '=', False)]}"
+                        context="{'field_name': 'mobile', 'default_call_to_whom':'partner', 'default_partner_id': active_id}"
+                        />
+                    </div>
+                </xpath>
+        </field>
+    </record>
+    <menuitem id="click_call_menu" name="Click to Call" parent="sr_menu_sub" action="click_call_action" sequence="4"/>
+
+    </data>
+</odoo>

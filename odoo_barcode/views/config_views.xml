@@ -1,0 +1,69 @@
+<odoo>
+    <data>
+        <!-- Barcode Lables -->
+
+        <record id="view_barcode_config_form" model="ir.ui.view">
+            <field name="name">Barcode Config Form</field>
+            <field name="model">barcode.config</field>
+            <field name="arch" type="xml">
+                <form string="Price List" version="7.0">
+                    <header>
+                        <button name="execute" type="object" string="Apply" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <group col="2">
+                            <group col="2" string="Dimensions">
+                                <field name="label_width"/>
+                                <field name="label_height"/>
+                            </group>
+                            <group col="2" string="Display" attrs="{'invisible':[('price','=',False)]}">
+                                <field name="currency" attrs="{'invisible':[('price','=',False)]}"/>
+                                <field name="symbol_position" attrs="{'invisible':[('price','=',False)]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Attributes To Print">
+                                <group col="4" string="Display Attributes Into Labels">
+                                    <field name="product_name"/>
+                                    <field name="attributes"/>
+                                    <field name="product_default_code"/>
+                                    <field name="price"/>
+                                    <field name="barcode_label"/>
+                                </group>
+                                <group col="2" string="Barcode">
+                                    <field name="type" widget="selection"/>
+                                    <field name="barcode_field" widget="selection"/>
+                                    <field name="readable"/>
+                                </group>
+                            </page>
+                            <page string="Margins">
+                                <group col="4">
+                                    <field name="margin_top"/>
+                                    <field name="margin_bottom"/>
+                                    <field name="margin_left"/>
+                                    <field name="margin_right"/>
+                                    <field name="dpi"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_barcode_config" model="ir.actions.act_window">
+            <field name="name">Barcode Product Labels</field>
+            <field name="res_model">barcode.config</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_barcode_config_form"/>
+            <field name="target">inline</field>
+        </record>
+
+        <menuitem id="barcode_config_menu" name="Barcode Labels" parent="stock.menu_stock_root" sequence="100"
+                  groups="barcode_menu"/>
+        <menuitem action="action_barcode_config" id="barcode_config" parent="barcode_config_menu" sequence="1"
+        />
+
+
+    </data>
+</odoo>
